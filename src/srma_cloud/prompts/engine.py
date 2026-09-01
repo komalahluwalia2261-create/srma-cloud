@@ -31,10 +31,15 @@ class ModelClient(ABC):
 
 
 class AnthropicClient(ModelClient):
-    def __init__(self, model: str = "claude-sonnet-4-6", api_key_env: str = "ANTHROPIC_API_KEY"):
+    def __init__(self, model: str = "claude-sonnet-5", api_key_env: str = "ANTHROPIC_API_KEY"):
         import os
         import anthropic
 
+        if api_key_env not in os.environ:
+            raise EnvironmentError(
+                f"{api_key_env} is not set. Get a key at https://console.anthropic.com/ "
+                f"and run: export {api_key_env}=sk-ant-..."
+            )
         self._model = model
         self._client = anthropic.Anthropic(api_key=os.environ[api_key_env])
 
@@ -53,6 +58,11 @@ class OpenAIClient(ModelClient):
         import os
         from openai import OpenAI
 
+        if api_key_env not in os.environ:
+            raise EnvironmentError(
+                f"{api_key_env} is not set. Get a key at https://platform.openai.com/api-keys "
+                f"and run: export {api_key_env}=sk-..."
+            )
         self._model = model
         self._client = OpenAI(api_key=os.environ[api_key_env])
 

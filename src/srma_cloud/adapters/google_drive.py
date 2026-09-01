@@ -39,6 +39,11 @@ SUPPORTED_MIME_TYPES = {
 }
 
 
+def _escape_query_value(value: str) -> str:
+    """Escapes a value for embedding in a Drive query string literal."""
+    return value.replace("\\", "\\\\").replace("'", "\\'")
+
+
 class GoogleDriveAdapter(StorageAdapter):
     def __init__(self, credentials: Credentials):
         self._drive = build("drive", "v3", credentials=credentials)
@@ -72,9 +77,12 @@ class GoogleDriveAdapter(StorageAdapter):
     # ---- StorageAdapter interface ----------------------------------------------
 
     def list_new_files(self, folder_ref: str, since: Optional[str] = None) -> Iterable[FileRef]:
-        query = f"'{folder_ref}' in parents and trashed = false"
+        # Drive's query language treats ' as a string delimiter with no
+        # parameterized-query option, so any literal ' in folder_ref/since
+        # must be escaped or it breaks (or alters the meaning of) the query.
+        query = f"'{_escape_query_value(folder_ref)}' in parents and trashed = false"
         if since:
-            query += f" and modifiedTime > '{since}'"
+            query += f" and modifiedTime > '{_escape_query_value(since)}'"
 
         page_token = None
         while True:
