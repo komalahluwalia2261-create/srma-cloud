@@ -1,0 +1,26 @@
+# Example review protocol config.
+# Copy this file per review; `objectives`, `inclusion_criteria`, and
+# `exclusion_criteria` are inserted verbatim into the screening prompt —
+# do not paraphrase them from your protocol, as paraphrasing/inferring
+# criteria has been reported to reduce screening sensitivity.
+
+objectives: >
+  To evaluate the association between menstrual hygiene management (MHM)
+  interventions and school absenteeism among adolescent girls in
+  low- and middle-income countries.
+
+inclusion_criteria:
+  - Population: adolescent girls (aged 10-19) attending school
+  - Intervention/exposure: any MHM-related intervention (e.g., product
+    provision, education, WASH facility improvement) or MHM-related
+    exposure (e.g., menstrual poverty, lack of facilities)
+  - Outcome: school absenteeism or attendance reported quantitatively
+  - Study types: randomized controlled trials, cohort, cross-sectional,
+    or case-control studies
+  - Setting: low- and middle-income countries (per World Bank classification)
+
+exclusion_criteria:
+  - Population is not school-attending adolescent girls
+  - No absenteeism/attendance outcome reported
+  - Conference abstracts, editorials, or commentaries with no primary data
+  - Not published in English
